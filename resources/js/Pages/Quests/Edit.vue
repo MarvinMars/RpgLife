@@ -1,16 +1,18 @@
 <script setup>
 
-import {Head, useForm} from "@inertiajs/vue3";
+import {Head, useForm, usePage} from "@inertiajs/vue3";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import InputError from "@/Components/InputError.vue";
 import TextInput from "@/Components/TextInput.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 
+const quest = usePage().props.quest;
+
 const form = useForm({
-  name: '',
-  slug: '',
-  description: '',
+  name: quest.name,
+  slug: quest.slug,
+  description: quest.description,
 });
 
 </script>
@@ -19,13 +21,13 @@ const form = useForm({
   <Head title="Create Quest" />
   <AuthenticatedLayout>
     <template #header>
-      <h2 class="font-semibold text-xl text-gray-800 leading-tight">Create Quest</h2>
+      <h2 class="font-semibold text-xl text-gray-800 leading-tight">Update Quest</h2>
     </template>
 
     <div class="py-12">
       <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
         <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-          <form @submit.prevent="form.post(route('quests.store'))" class="mt-6 space-y-6">
+          <form @submit.prevent="form.patch(route('quests.update', quest))" class="mt-6 space-y-6">
             <div>
               <InputLabel for="name" value="Name" />
 
@@ -79,7 +81,7 @@ const form = useForm({
                   leave-active-class="transition ease-in-out"
                   leave-to-class="opacity-0"
               >
-                <p v-if="form.recentlySuccessful" class="text-sm text-gray-600">Saved.</p>
+                <p v-if="form.recentlySuccessful" class="text-sm text-gray-600">Updated.</p>
               </Transition>
             </div>
           </form>

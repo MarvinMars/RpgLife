@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreQuestRequest;
 use App\Http\Requests\UpdateQuestRequest;
 use App\Models\Quest;
-use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 
 class QuestController extends Controller
@@ -29,11 +30,11 @@ class QuestController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreQuestRequest $request)
+    public function store(StoreQuestRequest $request): RedirectResponse
     {
-        auth()->user()->quests()->create($request->all());
+        $quest = auth()->user()->quests()->create($request->all());
 
-	    return response(['created' => true]);
+	    return Redirect::route('quests.show', $quest);
     }
 
     /**
@@ -63,7 +64,7 @@ class QuestController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateQuestRequest $request, Quest $quest)
+    public function update(UpdateQuestRequest $request, Quest $quest): RedirectResponse
     {
 	    if (auth()->user()->cannot('update', $quest)) {
 		    abort(403);
@@ -71,13 +72,13 @@ class QuestController extends Controller
 
 	    $quest->update($request->all());
 
-		return response(['updated' => true]);
+	    return Redirect::route('quests.edit', $quest);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Quest $quest)
+    public function destroy(Quest $quest): RedirectResponse
     {
 	    if (auth()->user()->cannot('delete', $quest)) {
 		    abort(403);
@@ -85,6 +86,6 @@ class QuestController extends Controller
 
 	    $quest->delete();
 
-	    return response(['deleted' => true]);
+	    return Redirect::route('quests.index');
     }
 }

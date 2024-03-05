@@ -88,9 +88,9 @@ class QuestTest extends TestCase
 			    'description' => 'Test Quest description'
 		    ]);
 
-	    $response->assertStatus(200);
+	    $quest = $user->quests()->where('slug', 'test')->first();
 
-	    $this->assertTrue($response['created']);
+	    $response->assertRedirectToRoute('quests.show', $quest);
 
 	    $this->assertDatabaseHas('quests', [
 		    'slug' => 'test',
@@ -117,9 +117,7 @@ class QuestTest extends TestCase
 			->actingAs($user)
 			->patch(route('quests.update', $quest), $data);
 
-		$response->assertStatus(200);
-
-		$this->assertTrue($response['updated']);
+		$response->assertRedirectToRoute('quests.edit', $quest);
 
 		$data['id'] = $quest->id;
 
@@ -139,9 +137,7 @@ class QuestTest extends TestCase
 			->actingAs($user)
 			->delete(route('quests.destroy', $quest));
 
-		$response->assertStatus(200);
-
-		$this->assertTrue($response['deleted']);
+		$response->assertRedirectToRoute('quests.index');
 
 		$this->assertDatabaseMissing('quests', [
 			'id' => $quest->id
