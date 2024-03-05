@@ -11,6 +11,8 @@ use Tests\TestCase;
 class QuestTest extends TestCase
 {
 
+	use RefreshDatabase;
+
 	/**
 	 * Check auth protection for create quest
 	 */
@@ -19,7 +21,7 @@ class QuestTest extends TestCase
 		$response = $this
 			->get('/quests');
 
-		$response->assertStatus(401);
+		$response->assertRedirectToRoute('login');
 
 		$data = [
 			'name' => 'Fail Quest name',
@@ -28,37 +30,47 @@ class QuestTest extends TestCase
 		];
 
 		$response = $this
-			->post('/quests', $data);
+			->post(route('quests.store'), $data);
 
-		$response->assertStatus(401);
+		$response->assertRedirectToRoute('login');
 
-		$user = User::factory()->create();
-
-		$quest = Quest::factory()->create($user);
+		$quest = Quest::factory()->create();
 
 		$response = $this
-			->patch('/quests/' . $quest->id, $data);
+			->patch(route('quests.update', $quest), $data);
 
-		$response->assertStatus(401);
+		$response->assertRedirectToRoute('login');
 
 		$response = $this
-			->delete('/quests/'. $quest->id);
+			->delete(route('quests.destroy', $quest));
 
-		$response->assertStatus(401);
+		$response->assertRedirectToRoute('login');
 
 		$user2 = User::factory()->create();
 
 		$response = $this
 			->actingAs($user2)
-			->patch('/quests/' . $quest->id, $data);
+			->get(route('quests.show', $quest));
 
-		$response->assertStatus(401);
+		$response->assertStatus(403);
 
 		$response = $this
 			->actingAs($user2)
-			->delete('/quests/'. $quest->id);
+			->get(route('quests.edit', $quest));
 
-		$response->assertStatus(401);
+		$response->assertStatus(403);
+
+		$response = $this
+			->actingAs($user2)
+			->patch(route('quests.update', $quest), $data);
+
+		$response->assertStatus(403);
+
+		$response = $this
+			->actingAs($user2)
+			->delete(route('quests.destroy', $quest));
+
+		$response->assertStatus(403);
 	}
 
     /**
@@ -70,7 +82,7 @@ class QuestTest extends TestCase
 
 	    $response = $this
 		    ->actingAs($user)
-		    ->post('/quests', [
+		    ->post(route('quests.store'), [
 			    'name' => 'Test Quest name',
 			    'slug' => 'test',
 			    'description' => 'Test Quest description'
@@ -91,9 +103,9 @@ class QuestTest extends TestCase
 	 */
 	public function test_quest_update(): void
 	{
-		$user = User::factory()->create();
+		$quest = Quest::factory()->create();
 
-		$quest = Quest::factory()->create($user);
+		$user = $quest->user;
 
 		$data = [
 			'name' => 'Test updated Quest',
@@ -103,7 +115,7 @@ class QuestTest extends TestCase
 
 		$response = $this
 			->actingAs($user)
-			->patch('/quests/' . $quest->id, $data);
+			->patch(route('quests.update', $quest), $data);
 
 		$response->assertStatus(200);
 
@@ -119,12 +131,13 @@ class QuestTest extends TestCase
 	 */
 	public function test_quest_delete(): void
 	{
-		$user = User::factory()->create();
-		$quest = Quest::factory()->create($user);
+		$quest = Quest::factory()->create();
+
+		$user = $quest->user;
 
 		$response = $this
 			->actingAs($user)
-			->delete('/quests/'. $quest->id);
+			->delete(route('quests.destroy', $quest));
 
 		$response->assertStatus(200);
 
@@ -144,27 +157,29 @@ class QuestTest extends TestCase
 
 		$response = $this
 			->actingAs($user)
-			->get('/quests');
+			->get(route('quests.index'));
 
 		$response->assertStatus(200);
 
 		$response = $this
 			->actingAs($user)
-			->get('/quests/create');
+			->get(route('quests.create'));
 
 		$response->assertStatus(200);
 
-		$quest = Quest::factory()->create($user);
+		$quest = Quest::factory()->create();
+
+		$user = $quest->user;
 
 		$response = $this
 			->actingAs($user)
-			->get('/quests/' . $quest->id);
+			->get(route('quests.show', $quest));
 
 		$response->assertStatus(200);
 
 		$response = $this
 			->actingAs($user)
-			->get('/quests/'. $quest->id . '/edit');
+			->get(route('quests.edit', $quest));
 
 		$response->assertStatus(200);
 	}
