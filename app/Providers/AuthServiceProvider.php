@@ -3,7 +3,9 @@
 namespace App\Providers;
 
 // use Illuminate\Support\Facades\Gate;
+use App\Models\Characteristic;
 use App\Models\Quest;
+use App\Policies\CharacteristicPolicy;
 use App\Policies\QuestPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
@@ -16,6 +18,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
 	    Quest::class => QuestPolicy::class,
+	    Characteristic::class => CharacteristicPolicy::class,
     ];
 
     /**

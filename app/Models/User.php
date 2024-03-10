@@ -44,11 +44,13 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-	/**
-	 * Get the comments for the blog post.
-	 */
 	public function quests(): HasMany
 	{
 		return $this->hasMany(Quest::class);
+	}
+
+	public function characteristics(): HasMany
+	{
+		return $this->hasMany(Characteristic::class);
 	}
 }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CharacteristicController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\QuestController;
 use Illuminate\Foundation\Application;
@@ -36,6 +37,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
 	Route::resource('/quests', QuestController::class);
+
+	Route::resource('/characteristics', CharacteristicController::class);
 });
 
 require __DIR__.'/auth.php';
