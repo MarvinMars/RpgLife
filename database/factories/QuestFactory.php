@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\QuestStatus;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -20,6 +21,8 @@ class QuestFactory extends Factory
         return [
             'name' => fake()->name(),
 	        'slug' => fake()->unique()->slug(3),
+            'xp' => fake()->numberBetween(0,300),
+            'status' => QuestStatus::PENDING,
 	        'description' => fake()->paragraph(),
             'user_id' => User::factory(),
         ];
