@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use function PHPUnit\Framework\isFalse;
 
 #[ObservedBy([QuestObserver::class])]
@@ -19,9 +20,9 @@ class Quest extends Model
 		'name',
 		'slug',
 		'status',
-		'status',
 		'description',
 		'xp',
+		'parent_id'
 	];
 
 	protected $guarded = ['is_rewarded'];
@@ -33,6 +34,16 @@ class Quest extends Model
 	public function user(): BelongsTo
 	{
 		return $this->belongsTo(User::class);
+	}
+
+	public function parent() : BelongsTo
+	{
+		return $this->belongsTo(Quest::class, 'parent_id');
+	}
+
+	public function children() : HasMany
+	{
+		return $this->hasMany(Quest::class, 'parent_id');
 	}
 
 	public function canReward(): bool
