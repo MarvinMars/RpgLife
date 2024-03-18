@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreQuestRequest;
 use App\Http\Requests\UpdateQuestRequest;
+use Illuminate\Http\Request;
 use App\Models\Quest;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
@@ -88,4 +90,16 @@ class QuestController extends Controller
 
 	    return Redirect::route('quests.index');
     }
+
+	public function updateStatus(Request $request, Quest $quest): JsonResponse
+	{
+
+		if (auth()->user()->cannot('update', $quest)) {
+			abort(403);
+		}
+
+		$quest->update(['status' => $request->get('status') ]);
+
+		return response()->json(['success' => true]);
+	}
 }

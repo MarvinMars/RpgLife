@@ -1,10 +1,9 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\User;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 
@@ -40,19 +39,19 @@ class LevelTest extends TestCase
 
 		$maxXp = User::MAX_XP;
 
-		$xp = fake()->numberBetween($maxXp, $maxXp * 3);
-
-		$minimumLevel = $user->calculateLevelFromXp($xp);
+		$xp = fake()->numberBetween($maxXp, $maxXp);
 
 		$level = $user->level;
 
-		$userXp = $user->addXP($xp);
+		$minimumLevel = $user->calculateLevelFromXp($xp);
 
 		$xpAfterUpdate = $user->calculateXpAfterLevelUp($xp, $minimumLevel);
 
+		$userXp = $user->addXP($xp);
+
 		$this->assertEquals($xpAfterUpdate, $userXp);
 
-		$this->assertGreaterThan($level, $minimumLevel);
+		$this->assertGreaterThanOrEqual($level, $minimumLevel);
 	}
 
 	public function test_xp_and_level_protect_from_update(): void

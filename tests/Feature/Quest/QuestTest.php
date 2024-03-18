@@ -1,11 +1,11 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\Quest;
 
+use App\Enums\QuestStatus;
 use App\Models\Quest;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class QuestTest extends TestCase
@@ -122,6 +122,29 @@ class QuestTest extends TestCase
 		$data['id'] = $quest->id;
 
 		$this->assertDatabaseHas('quests', $data);
+	}
+
+	/**
+	 * Quest update
+	 */
+	public function test_quest_update_status(): void
+	{
+		foreach (QuestStatus::cases() as $shape) {
+			$quest = Quest::factory()->create();
+
+			$user = $quest->user;
+
+			$response = $this
+				->actingAs($user)
+				->patch(route('quests.update.status', $quest), ['status' => $shape->value]);
+
+			$response->assertOk();
+
+			$this->assertDatabaseHas('quests', [
+				'id' => $quest->id,
+				'status' => $shape->value
+			]);
+		}
 	}
 
 	/**

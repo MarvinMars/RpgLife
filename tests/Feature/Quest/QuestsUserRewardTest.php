@@ -1,11 +1,10 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\Quest;
 
 use App\Enums\QuestStatus;
 use App\Models\Quest;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class QuestsUserRewardTest extends TestCase
