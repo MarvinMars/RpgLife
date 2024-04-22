@@ -13,7 +13,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('quests', function (Blueprint $table) {
-	        $table->string('status')->default(QuestStatus::PENDING)->after('slug');
+            $table->string('status')->default(QuestStatus::PENDING)->after('slug');
         });
     }
 
@@ -23,7 +23,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('quests', function (Blueprint $table) {
-	        $table->dropColumn('status');
+            $table->dropColumn('status');
         });
     }
 };

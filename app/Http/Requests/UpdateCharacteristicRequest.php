@@ -15,10 +15,10 @@ class UpdateCharacteristicRequest extends FormRequest
      */
     public function rules(): array
     {
-	    return [
-		    'name' => ['required', 'string'],
-		    'description' => ['nullable', 'string'],
-		    'slug' => ['required', Rule::unique(Characteristic::class)->ignore($this->route('characteristic')->id ?? 0), 'string']
-	    ];
+        return [
+            'name' => ['required', 'string'],
+            'description' => ['nullable', 'string'],
+            'slug' => ['required', Rule::unique(Characteristic::class)->ignore($this->route('characteristic')->id ?? 0), 'string'],
+        ];
     }
 }

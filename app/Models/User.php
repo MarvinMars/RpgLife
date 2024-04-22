@@ -13,9 +13,9 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
-	const MAX_XP = 100;
+    const MAX_XP = 100;
 
-	/**
+    /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
@@ -26,7 +26,7 @@ class User extends Authenticatable
         'password',
     ];
 
-	protected $guarded = [ 'level', 'xp' ];
+    protected $guarded = ['level', 'xp'];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -48,54 +48,54 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-	public function quests(): HasMany
-	{
-		return $this->hasMany(Quest::class);
-	}
+    public function quests(): HasMany
+    {
+        return $this->hasMany(Quest::class);
+    }
 
-	public function characteristics(): HasMany
-	{
-		return $this->hasMany(Characteristic::class);
-	}
+    public function characteristics(): HasMany
+    {
+        return $this->hasMany(Characteristic::class);
+    }
 
-	public function addLevel(int $level = 1): int
-	{
-		$this->level += $level;
+    public function addLevel(int $level = 1): int
+    {
+        $this->level += $level;
 
-		$this->save();
+        $this->save();
 
-		$this->refresh();
+        $this->refresh();
 
-		return $this->level;
-	}
+        return $this->level;
+    }
 
-	public function addXP(int $xp = 0): int
-	{
-		$this->xp += $xp;
+    public function addXP(int $xp = 0): int
+    {
+        $this->xp += $xp;
 
-		if($this->xp >= self::MAX_XP) {
-			$level = $this->calculateLevelFromXp($xp);
+        if ($this->xp >= self::MAX_XP) {
+            $level = $this->calculateLevelFromXp($xp);
 
-			$this->level += $level;
+            $this->level += $level;
 
-			$this->xp = $this->calculateXpAfterLevelUp($xp, $level);
+            $this->xp = $this->calculateXpAfterLevelUp($xp, $level);
 
-		}
+        }
 
-		$this->save();
+        $this->save();
 
-		$this->refresh();
+        $this->refresh();
 
-		return $this->xp;
-	}
+        return $this->xp;
+    }
 
-	public function calculateLevelFromXp (int $xp = 0): int
-	{
-		return floor( $xp / self::MAX_XP );
-	}
+    public function calculateLevelFromXp(int $xp = 0): int
+    {
+        return floor($xp / self::MAX_XP);
+    }
 
-	public function calculateXpAfterLevelUp (int $xp = 0, int $level = 1): int
-	{
-		return $xp - floor($level * self::MAX_XP);
-	}
+    public function calculateXpAfterLevelUp(int $xp = 0, int $level = 1): int
+    {
+        return $xp - floor($level * self::MAX_XP);
+    }
 }

@@ -16,10 +16,10 @@ class UpdateQuestRequest extends FormRequest
     public function rules(): array
     {
         return [
-	        'name' => ['required', 'string'],
-	        'description' => ['nullable', 'string'],
-	        'slug' => ['required', Rule::unique(Quest::class)->ignore($this->route('quest')->id ?? 0), 'string'],
-	        'xp' => ['nullable', 'numeric'],
+            'name' => ['required', 'string'],
+            'description' => ['nullable', 'string'],
+            'slug' => ['required', Rule::unique(Quest::class)->ignore($this->route('quest')->id ?? 0), 'string'],
+            'xp' => ['nullable', 'numeric'],
         ];
     }
 }

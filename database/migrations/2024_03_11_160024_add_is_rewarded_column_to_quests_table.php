@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('quests', function (Blueprint $table) {
-	        $table->boolean('is_rewarded')->default(0)->after('xp');
+            $table->boolean('is_rewarded')->default(0)->after('xp');
         });
     }
 

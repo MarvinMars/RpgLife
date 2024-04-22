@@ -20,10 +20,10 @@ class QuestFactory extends Factory
     {
         return [
             'name' => fake()->name(),
-	        'slug' => fake()->unique()->slug(3),
-            'xp' => fake()->numberBetween(0,300),
+            'slug' => fake()->unique()->slug(3),
+            'xp' => fake()->numberBetween(0, 300),
             'status' => QuestStatus::PENDING,
-	        'description' => fake()->paragraph(),
+            'description' => fake()->paragraph(),
             'user_id' => User::factory(),
         ];
     }

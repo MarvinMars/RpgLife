@@ -2,7 +2,6 @@
 
 import {Head, usePage} from "@inertiajs/vue3";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import DeleteQuestForm from "@/Pages/Quests/Partials/DeleteQuestForm.vue";
 import { Link } from '@inertiajs/vue3'
 
 const quests = usePage().props.quests;

@@ -17,11 +17,11 @@ class CharacteristicFactory extends Factory
      */
     public function definition(): array
     {
-	    return [
-		    'name' => fake()->name(),
-		    'slug' => fake()->unique()->slug(3),
-		    'description' => fake()->paragraph(),
-		    'user_id' => User::factory(),
-	    ];
+        return [
+            'name' => fake()->name(),
+            'slug' => fake()->unique()->slug(3),
+            'description' => fake()->paragraph(),
+            'user_id' => User::factory(),
+        ];
     }
 }

@@ -10,15 +10,14 @@ class Characteristic extends Model
 {
     use HasFactory;
 
-	protected $fillable = [
-		'name',
-		'slug',
-		'description',
-	];
+    protected $fillable = [
+        'name',
+        'slug',
+        'description',
+    ];
 
-
-	public function user(): BelongsTo
-	{
-		return $this->belongsTo(User::class);
-	}
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
 }

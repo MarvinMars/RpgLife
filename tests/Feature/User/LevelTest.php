@@ -9,71 +9,71 @@ use Tests\TestCase;
 
 class LevelTest extends TestCase
 {
-	use RefreshDatabase;
+    use RefreshDatabase;
 
     public function test_level_increment(): void
     {
         $user = User::factory()->create();
 
-	    $level = $user->level;
+        $level = $user->level;
 
-	    $userLevel = $user->addLevel();
+        $userLevel = $user->addLevel();
 
-		$this->assertGreaterThan($level, $userLevel);
+        $this->assertGreaterThan($level, $userLevel);
     }
 
-	public function test_xp_update(): void
-	{
-		$user = User::factory()->create();
+    public function test_xp_update(): void
+    {
+        $user = User::factory()->create();
 
-		$xp = 50;
+        $xp = 50;
 
-		$userXp = $user->addXP($xp);
+        $userXp = $user->addXP($xp);
 
-		$this->assertEquals($xp, $userXp);
-	}
+        $this->assertEquals($xp, $userXp);
+    }
 
-	public function test_xp_max_level(): void
-	{
-		$user = User::factory()->create();
+    public function test_xp_max_level(): void
+    {
+        $user = User::factory()->create();
 
-		$maxXp = User::MAX_XP;
+        $maxXp = User::MAX_XP;
 
-		$xp = fake()->numberBetween($maxXp, $maxXp);
+        $xp = fake()->numberBetween($maxXp, $maxXp);
 
-		$level = $user->level;
+        $level = $user->level;
 
-		$minimumLevel = $user->calculateLevelFromXp($xp);
+        $minimumLevel = $user->calculateLevelFromXp($xp);
 
-		$xpAfterUpdate = $user->calculateXpAfterLevelUp($xp, $minimumLevel);
+        $xpAfterUpdate = $user->calculateXpAfterLevelUp($xp, $minimumLevel);
 
-		$userXp = $user->addXP($xp);
+        $userXp = $user->addXP($xp);
 
-		$this->assertEquals($xpAfterUpdate, $userXp);
+        $this->assertEquals($xpAfterUpdate, $userXp);
 
-		$this->assertGreaterThanOrEqual($level, $minimumLevel);
-	}
+        $this->assertGreaterThanOrEqual($level, $minimumLevel);
+    }
 
-	public function test_xp_and_level_protect_from_update(): void
-	{
-		$data = [
-			'name' => 'Test',
-			'email' => 'test@gmail.com',
-			'password' => Hash::make('password'),
-			'level' => 2,
-			'xp' => 10
-		];
+    public function test_xp_and_level_protect_from_update(): void
+    {
+        $data = [
+            'name' => 'Test',
+            'email' => 'test@gmail.com',
+            'password' => Hash::make('password'),
+            'level' => 2,
+            'xp' => 10,
+        ];
 
-		$user = User::create($data);
+        $user = User::create($data);
 
-		$this->assertNotEquals($user->xp, $data['xp']);
-		$this->assertNotEquals($user->level, $data['level']);
+        $this->assertNotEquals($user->xp, $data['xp']);
+        $this->assertNotEquals($user->level, $data['level']);
 
-		$user->update($data);
+        $user->update($data);
 
-		$user->refresh();
+        $user->refresh();
 
-		$this->assertNotEquals($user->xp, $data['xp']);
-		$this->assertNotEquals($user->level, $data['level']);
-	}
+        $this->assertNotEquals($user->xp, $data['xp']);
+        $this->assertNotEquals($user->level, $data['level']);
+    }
 }

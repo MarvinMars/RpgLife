@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\Quest;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class QuestSeeder extends Seeder
@@ -13,6 +12,6 @@ class QuestSeeder extends Seeder
      */
     public function run(): void
     {
-//	     Quest::factory(3)->create();
+        //	     Quest::factory(3)->create();
     }
 }

@@ -11,8 +11,8 @@ class QuestObserver
      */
     public function updated(Quest $quest): void
     {
-        if($quest->canReward()) {
-	        $quest->reward();
+        if ($quest->canReward()) {
+            $quest->reward();
         }
     }
 }

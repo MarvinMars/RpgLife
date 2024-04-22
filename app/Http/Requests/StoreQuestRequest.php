@@ -15,10 +15,10 @@ class StoreQuestRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string'],
-	        'description' => ['nullable', 'string'],
-	        'slug' => ['required', 'unique:quests,slug', 'string'],
+            'description' => ['nullable', 'string'],
+            'slug' => ['required', 'unique:quests,slug', 'string'],
             'xp' => ['nullable', 'numeric'],
-            'parent_id' => ['nullable', 'exists:quests,id']
+            'parent_id' => ['nullable', 'exists:quests,id'],
         ];
     }
 }

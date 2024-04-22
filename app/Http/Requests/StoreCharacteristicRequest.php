@@ -14,9 +14,9 @@ class StoreCharacteristicRequest extends FormRequest
     public function rules(): array
     {
         return [
-	        'name' => ['required', 'string'],
-	        'description' => ['nullable', 'string'],
-	        'slug' => ['required', 'unique:quests,slug', 'string']
+            'name' => ['required', 'string'],
+            'description' => ['nullable', 'string'],
+            'slug' => ['required', 'unique:quests,slug', 'string'],
         ];
     }
 }

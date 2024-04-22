@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\Characteristic;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class CharacteristicSeeder extends Seeder
@@ -13,6 +12,6 @@ class CharacteristicSeeder extends Seeder
      */
     public function run(): void
     {
-//	     Characteristic::factory(3)->create();
+        //	     Characteristic::factory(3)->create();
     }
 }

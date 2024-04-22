@@ -9,36 +9,36 @@ use Tests\TestCase;
 
 class QuestsUserRewardTest extends TestCase
 {
-	use RefreshDatabase;
+    use RefreshDatabase;
 
     public function test_user_finish_quest(): void
     {
         $quest = Quest::factory()->create();
 
-		$user = $quest->user;
+        $user = $quest->user;
 
-	    $reward = $quest->xp;
+        $reward = $quest->xp;
 
-		$expectedLevel = $user->calculateLevelFromXp($reward);
+        $expectedLevel = $user->calculateLevelFromXp($reward);
 
-	    $expectedXp = $user->calculateXpAfterLevelUp($reward, $expectedLevel);
+        $expectedXp = $user->calculateXpAfterLevelUp($reward, $expectedLevel);
 
-		$quest->update([
-			'status' => QuestStatus::COMPLETED
-		]);
+        $quest->update([
+            'status' => QuestStatus::COMPLETED,
+        ]);
 
-		$quest->refresh();
+        $quest->refresh();
 
-		$this->assertEquals(QuestStatus::COMPLETED, $quest->status);
+        $this->assertEquals(QuestStatus::COMPLETED, $quest->status);
 
-	    $this->assertTrue((boolval($quest->is_rewarded)));
+        $this->assertTrue((boolval($quest->is_rewarded)));
 
-		$user->refresh();
+        $user->refresh();
 
-		if($expectedLevel > 0) {
-			$this->assertEquals($user->level, $expectedLevel + 1);
-		}
+        if ($expectedLevel > 0) {
+            $this->assertEquals($user->level, $expectedLevel + 1);
+        }
 
-	    $this->assertEquals($user->xp, $expectedXp);
+        $this->assertEquals($user->xp, $expectedXp);
     }
 }

@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreQuestRequest;
 use App\Http\Requests\UpdateQuestRequest;
-use Illuminate\Http\Request;
 use App\Models\Quest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 
@@ -18,7 +18,7 @@ class QuestController extends Controller
      */
     public function index()
     {
-	    return Inertia::render('Quests/Index', ['quests' => Quest::all()]);
+        return Inertia::render('Quests/Index', ['quests' => Quest::all()]);
     }
 
     /**
@@ -26,7 +26,7 @@ class QuestController extends Controller
      */
     public function create()
     {
-	    return Inertia::render('Quests/Create');
+        return Inertia::render('Quests/Create');
     }
 
     /**
@@ -36,7 +36,7 @@ class QuestController extends Controller
     {
         $quest = auth()->user()->quests()->create($request->all());
 
-	    return Redirect::route('quests.show', $quest);
+        return Redirect::route('quests.show', $quest);
     }
 
     /**
@@ -44,11 +44,11 @@ class QuestController extends Controller
      */
     public function show(Quest $quest)
     {
-	    if (auth()->user()->cannot('view', $quest)) {
-		    abort(403);
-	    }
+        if (auth()->user()->cannot('view', $quest)) {
+            abort(403);
+        }
 
-	    return Inertia::render('Quests/Show', ['quest' => $quest]);
+        return Inertia::render('Quests/Show', ['quest' => $quest]);
     }
 
     /**
@@ -56,11 +56,11 @@ class QuestController extends Controller
      */
     public function edit(Quest $quest)
     {
-	    if (auth()->user()->cannot('update', $quest)) {
-		    abort(403);
-	    }
+        if (auth()->user()->cannot('update', $quest)) {
+            abort(403);
+        }
 
-	    return Inertia::render('Quests/Edit', ['quest' => $quest]);
+        return Inertia::render('Quests/Edit', ['quest' => $quest]);
     }
 
     /**
@@ -68,13 +68,13 @@ class QuestController extends Controller
      */
     public function update(UpdateQuestRequest $request, Quest $quest): RedirectResponse
     {
-	    if (auth()->user()->cannot('update', $quest)) {
-		    abort(403);
-	    }
+        if (auth()->user()->cannot('update', $quest)) {
+            abort(403);
+        }
 
-	    $quest->update($request->all());
+        $quest->update($request->all());
 
-	    return Redirect::route('quests.edit', $quest);
+        return Redirect::route('quests.edit', $quest);
     }
 
     /**
@@ -82,24 +82,24 @@ class QuestController extends Controller
      */
     public function destroy(Quest $quest): RedirectResponse
     {
-	    if (auth()->user()->cannot('delete', $quest)) {
-		    abort(403);
-	    }
+        if (auth()->user()->cannot('delete', $quest)) {
+            abort(403);
+        }
 
-	    $quest->delete();
+        $quest->delete();
 
-	    return Redirect::route('quests.index');
+        return Redirect::route('quests.index');
     }
 
-	public function updateStatus(Request $request, Quest $quest): JsonResponse
-	{
+    public function updateStatus(Request $request, Quest $quest): JsonResponse
+    {
 
-		if (auth()->user()->cannot('update', $quest)) {
-			abort(403);
-		}
+        if (auth()->user()->cannot('update', $quest)) {
+            abort(403);
+        }
 
-		$quest->update(['status' => $request->get('status') ]);
+        $quest->update(['status' => $request->get('status')]);
 
-		return response()->json(['success' => true]);
-	}
+        return response()->json(['success' => true]);
+    }
 }

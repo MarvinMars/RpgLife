@@ -17,8 +17,8 @@ class AuthServiceProvider extends ServiceProvider
      * @var array<class-string, class-string>
      */
     protected $policies = [
-	    Quest::class => QuestPolicy::class,
-	    Characteristic::class => CharacteristicPolicy::class,
+        Quest::class => QuestPolicy::class,
+        Characteristic::class => CharacteristicPolicy::class,
     ];
 
     /**

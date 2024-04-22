@@ -4,7 +4,6 @@ namespace App\Policies;
 
 use App\Models\Quest;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class QuestPolicy
 {
@@ -13,7 +12,7 @@ class QuestPolicy
      */
     public function view(User $user, Quest $quest): bool
     {
-	    return $user->id === $quest->user_id;
+        return $user->id === $quest->user_id;
     }
 
     /**
@@ -21,7 +20,7 @@ class QuestPolicy
      */
     public function update(User $user, Quest $quest): bool
     {
-	    return $user->id === $quest->user_id;
+        return $user->id === $quest->user_id;
     }
 
     /**
@@ -29,6 +28,6 @@ class QuestPolicy
      */
     public function delete(User $user, Quest $quest): bool
     {
-	    return $user->id === $quest->user_id;
+        return $user->id === $quest->user_id;
     }
 }
