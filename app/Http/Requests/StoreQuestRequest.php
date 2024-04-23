@@ -19,7 +19,8 @@ class StoreQuestRequest extends FormRequest
             'slug' => ['required', 'unique:quests,slug', 'string'],
             'xp' => ['nullable', 'numeric'],
             'parent_id' => ['nullable', 'exists:quests,id'],
-            'characteristics' => ['nullable'],
+            'characteristics' => ['nullable', 'array'],
+            'characteristics.*' => ['exists:characteristics,id'],
         ];
     }
 }

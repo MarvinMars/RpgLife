@@ -20,6 +20,8 @@ class UpdateQuestRequest extends FormRequest
             'description' => ['nullable', 'string'],
             'slug' => ['required', Rule::unique(Quest::class)->ignore($this->route('quest')->id ?? 0), 'string'],
             'xp' => ['nullable', 'numeric'],
+            'characteristics' => ['nullable', 'array'],
+            'characteristics.*' => ['exists:characteristics,id'],
         ];
     }
 }
