@@ -34,7 +34,8 @@ class QuestController extends Controller
      */
     public function store(StoreQuestRequest $request): RedirectResponse
     {
-        $quest = auth()->user()->quests()->create($request->all());
+        $quest = auth()->user()->quests()->create($request->except(['characteristics']));
+        $quest->characteristics()->sync($request->get('characteristics'));
 
         return Redirect::route('quests.show', $quest);
     }
@@ -72,8 +73,8 @@ class QuestController extends Controller
             abort(403);
         }
 
-        $quest->update($request->all());
-
+        $quest->update($request->except(['characteristics']));
+        $quest->characteristics()->sync($request->get('characteristics'));
         return Redirect::route('quests.edit', $quest);
     }
 

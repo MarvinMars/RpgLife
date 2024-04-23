@@ -19,6 +19,7 @@ class UpdateCharacteristicRequest extends FormRequest
             'name' => ['required', 'string'],
             'description' => ['nullable', 'string'],
             'slug' => ['required', Rule::unique(Characteristic::class)->ignore($this->route('characteristic')->id ?? 0), 'string'],
+            'characteristics' => ['nullable'],
         ];
     }
 }

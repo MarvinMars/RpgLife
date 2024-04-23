@@ -28,12 +28,12 @@ class QuestCharacteristicRelationshipsTest extends TestCase
 
         $quest = $user->quests()->where('slug', 'test')->first();
 
-        $this->assertDatabaseHas('quest_characteristic', [
+        $this->assertDatabaseHas('characteristic_quest', [
             'characteristic_id' => $charFirst->id,
             'quest_id' => $quest->id,
         ]);
 
-        $this->assertDatabaseHas('quest_characteristic', [
+        $this->assertDatabaseHas('characteristic_quest', [
             'characteristic_id' => $charSecond->id,
             'quest_id' => $quest->id,
         ]);
@@ -44,20 +44,21 @@ class QuestCharacteristicRelationshipsTest extends TestCase
         $user = User::factory()->create();
         $charFirst = Characteristic::factory()->create();
         $charSecond = Characteristic::factory()->create();
-        $quest = Quest::factory()->create();
+        $quest = Quest::factory()->create(['user_id' => $user->id]);
 
         $this->actingAs($user)
-             ->patch(route('quests.update'), [
+             ->patch(route('quests.update', $quest), [
                  'name' => 'Test Quest name',
+                 'slug' => $quest->slug,
                  'characteristics' => [$charFirst->id, $charSecond->id],
              ]);
 
-        $this->assertDatabaseHas('quest_characteristic', [
+        $this->assertDatabaseHas('characteristic_quest', [
             'characteristic_id' => $charFirst->id,
             'quest_id' => $quest->id,
         ]);
 
-        $this->assertDatabaseHas('quest_characteristic', [
+        $this->assertDatabaseHas('characteristic_quest', [
             'characteristic_id' => $charSecond->id,
             'quest_id' => $quest->id,
         ]);
@@ -68,21 +69,22 @@ class QuestCharacteristicRelationshipsTest extends TestCase
         $user = User::factory()->create();
         $charFirst = Characteristic::factory()->create();
         $charSecond = Characteristic::factory()->create();
-        $quest = Quest::factory()->create();
+        $quest = Quest::factory()->create(['user_id' => $user->id]);
         $quest->characteristics()->attach([$charFirst->id, $charSecond->id]);
 
         $this->actingAs($user)
-            ->patch(route('quests.update'), [
+            ->patch(route('quests.update', $quest), [
                 'name' => 'Test Quest name',
+                'slug' => $quest->slug,
                 'characteristics' => [],
             ]);
 
-        $this->assertDatabaseMissing('quest_characteristic', [
+        $this->assertDatabaseMissing('characteristic_quest', [
             'characteristic_id' => $charFirst->id,
             'quest_id' => $quest->id,
         ]);
 
-        $this->assertDatabaseMissing('quest_characteristic', [
+        $this->assertDatabaseMissing('characteristic_quest', [
             'characteristic_id' => $charSecond->id,
             'quest_id' => $quest->id,
         ]);
