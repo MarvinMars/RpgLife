@@ -15,6 +15,7 @@ class Characteristic extends Model
         'name',
         'slug',
         'description',
+        'user_id',
     ];
 
     public function user(): BelongsTo

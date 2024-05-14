@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Characteristic;
 use App\Models\Quest;
 use Illuminate\Database\Seeder;
 
@@ -12,6 +13,9 @@ class QuestSeeder extends Seeder
      */
     public function run(): void
     {
-        //	     Quest::factory(3)->create();
+        $characteristics = Characteristic::all();
+        foreach ($characteristics as $characteristic) {
+            Quest::factory(50)->hasAttached($characteristic)->create(['user_id' => 1]);
+        }
     }
 }

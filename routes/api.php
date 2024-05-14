@@ -1,9 +1,5 @@
 <?php
 
-use App\Http\Controllers\QuestController;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
-
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -15,9 +11,3 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/user', function (Request $request) {
-        return $request->user();
-    });
-    Route::patch('/quests/{quest}/update-status', [QuestController::class, 'updateStatus'])->name('quests.update.status');
-});

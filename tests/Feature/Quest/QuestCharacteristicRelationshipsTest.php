@@ -18,7 +18,7 @@ class QuestCharacteristicRelationshipsTest extends TestCase
         $charFirst = Characteristic::factory()->create();
         $charSecond = Characteristic::factory()->create();
 
-       $this->actingAs($user)
+        $this->actingAs($user)
             ->post(route('quests.store'), [
                 'name' => 'Test Quest name',
                 'slug' => 'test',
@@ -47,11 +47,11 @@ class QuestCharacteristicRelationshipsTest extends TestCase
         $quest = Quest::factory()->create(['user_id' => $user->id]);
 
         $this->actingAs($user)
-             ->patch(route('quests.update', $quest), [
-                 'name' => 'Test Quest name',
-                 'slug' => $quest->slug,
-                 'characteristics' => [$charFirst->id, $charSecond->id],
-             ]);
+            ->patch(route('quests.update', $quest), [
+                'name' => 'Test Quest name',
+                'slug' => $quest->slug,
+                'characteristics' => [$charFirst->id, $charSecond->id],
+            ]);
 
         $this->assertDatabaseHas('characteristic_quest', [
             'characteristic_id' => $charFirst->id,

@@ -23,6 +23,8 @@ class Quest extends Model
         'description',
         'xp',
         'parent_id',
+        'user_id',
+        'completed_at'
     ];
 
     protected $guarded = ['is_rewarded'];
@@ -60,6 +62,7 @@ class Quest extends Model
     {
         $this->user->addXP($this->xp);
         $this->is_rewarded = true;
+        $this->completed_at = now();
 
         return $this->save();
     }
