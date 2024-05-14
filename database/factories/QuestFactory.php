@@ -31,6 +31,8 @@ class QuestFactory extends Factory
             'description' => fake()->paragraph(),
             'user_id' => User::factory(),
             'completed_at' => $is_completed ? $this->faker->dateTimeBetween('-3 months', 'now') : null,
+            'created_at' => $this->faker->dateTimeBetween('-3 months', 'now'),
+            'updated_at' => $this->faker->dateTimeBetween('-3 months', 'now'),
         ];
     }
 }

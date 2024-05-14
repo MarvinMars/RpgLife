@@ -13,4 +13,24 @@ enum QuestStatus: string
     {
         return array_column(QuestStatus::cases(), 'value');
     }
+
+    public function label(): string
+    {
+        return match ($this) {
+            QuestStatus::PENDING => 'Pending',
+            QuestStatus::IN_PROGRESS => 'In Progress',
+            QuestStatus::COMPLETED => 'Completed',
+            QuestStatus::FAILED => 'Failed'
+        };
+    }
+
+    public function color(): string
+    {
+        return match ($this) {
+            QuestStatus::PENDING => 'yellow',
+            QuestStatus::IN_PROGRESS => 'blue',
+            QuestStatus::COMPLETED => 'green',
+            QuestStatus::FAILED => 'red'
+        };
+    }
 }

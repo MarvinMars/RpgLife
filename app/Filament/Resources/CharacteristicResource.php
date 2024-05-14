@@ -7,6 +7,7 @@ use App\Models\Characteristic;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
+use Filament\Support\Facades\FilamentColor;
 use Filament\Tables;
 use Filament\Tables\Table;
 
@@ -27,11 +28,12 @@ class CharacteristicResource extends Resource
                     ->required()
                     ->maxLength(255),
                 Forms\Components\Textarea::make('description')
-                    ->required()
                     ->columnSpanFull(),
                 Forms\Components\Select::make('user_id')
                     ->relationship('user', 'name')
                     ->required(),
+                Forms\Components\ColorPicker::make('color'),
+                Forms\Components\TextInput::make('icon'),
             ]);
     }
 

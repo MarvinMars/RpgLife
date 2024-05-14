@@ -25,7 +25,9 @@ class CharacteristicsOverview extends BaseWidget
                 $characteristic->quests()->where('status', QuestStatus::COMPLETED)->count()
             )
             ->description('Total: ' . $characteristic->quests()->count())
-            ->chart($this->getChartData($characteristic->quests));
+            ->chart($this->getChartData($characteristic->quests))
+            ->color($characteristic->color)
+            ->icon($characteristic->icon);
         }
 
         return $stats;
