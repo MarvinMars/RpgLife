@@ -75,6 +75,7 @@ class QuestController extends Controller
 
         $quest->update($request->except(['characteristics']));
         $quest->characteristics()->sync($request->get('characteristics'));
+
         return Redirect::route('quests.edit', $quest);
     }
 

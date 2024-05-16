@@ -11,7 +11,8 @@ class CharacteristicQuestsChart extends ChartWidget
     protected static ?string $heading = 'Quests';
 
     protected static ?string $pollingInterval = null;
-    protected int | string | array $columnSpan = 'full';
+
+    protected int|string|array $columnSpan = 'full';
 
     protected function getData(): array
     {
@@ -21,11 +22,11 @@ class CharacteristicQuestsChart extends ChartWidget
 
         foreach ($statuses as $status) {
             $dataset = [
-                'label' => $status->label() .' quests',
+                'label' => $status->label().' quests',
                 'data' => [],
                 'borderColor' => $status->color(),
                 'fill' => false,
-                'borderWidth' => 5
+                'borderWidth' => 5,
             ];
 
             foreach ($characteristics as $characteristic) {

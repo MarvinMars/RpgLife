@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\Characteristic;
-use App\Models\Quest;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;

@@ -5,9 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\QuestResource\Pages;
 use App\Models\Characteristic;
 use App\Models\Quest;
-use App\Models\User;
 use Filament\Forms\Components\DateTimePicker;
-use Filament\Forms\Components\MarkdownEditor;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -38,7 +36,7 @@ class QuestResource extends Resource
                     ->live(debounce: 1000)
                     ->afterStateUpdated(fn (Set $set, ?string $state) => $set('slug', Str::slug($state)))
                     ->columnSpan(2),
-                TextInput::make('slug')->unique()->columnSpan(2),
+                TextInput::make('slug')->unique(ignoreRecord: true)->columnSpan(2),
                 TextInput::make('xp')->default(0)->type('number')->columnSpan(1),
                 Toggle::make('is_public')->inline(false)->columnSpan(1),
                 Textarea::make('description')->rows(10)->required()->columnSpan('full'),
@@ -51,6 +49,13 @@ class QuestResource extends Resource
                     ->multiple()
                     ->relationship(titleAttribute: 'name')
                     ->options(Characteristic::all()->pluck('name', 'id'))->columnSpan(2),
+                Repeater::make('reminders')
+                    ->relationship()
+                    ->simple(
+                        DateTimePicker::make('datetime')->native(false)->seconds(false)->required()
+                    )
+                    ->defaultItems(0)
+                    ->columnSpan('full'),
             ])->columns(6);
     }
 

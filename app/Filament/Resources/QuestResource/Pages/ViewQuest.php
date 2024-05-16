@@ -3,11 +3,9 @@
 namespace App\Filament\Resources\QuestResource\Pages;
 
 use App\Filament\Resources\QuestResource;
-use Filament\Actions;
 use Filament\Infolists\Components\TextEntry;
-use Filament\Resources\Pages\ViewRecord;
 use Filament\Infolists\Infolist;
-
+use Filament\Resources\Pages\ViewRecord;
 
 class ViewQuest extends ViewRecord
 {
