@@ -7,7 +7,6 @@ use App\Models\Characteristic;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Support\Facades\FilamentColor;
 use Filament\Tables;
 use Filament\Tables\Table;
 

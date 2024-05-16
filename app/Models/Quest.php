@@ -25,7 +25,7 @@ class Quest extends Model
         'parent_id',
         'user_id',
         'completed_at',
-        'is_public'
+        'is_public',
     ];
 
     protected $guarded = ['is_rewarded'];
@@ -52,6 +52,11 @@ class Quest extends Model
     public function children(): HasMany
     {
         return $this->hasMany(Quest::class, 'parent_id');
+    }
+
+    public function reminders(): HasMany
+    {
+        return $this->hasMany(Reminder::class);
     }
 
     public function canReward(): bool
