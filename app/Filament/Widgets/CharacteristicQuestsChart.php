@@ -24,6 +24,8 @@ class CharacteristicQuestsChart extends ChartWidget
                 'label' => $status->label() .' quests',
                 'data' => [],
                 'borderColor' => $status->color(),
+                'fill' => false,
+                'borderWidth' => 5
             ];
 
             foreach ($characteristics as $characteristic) {

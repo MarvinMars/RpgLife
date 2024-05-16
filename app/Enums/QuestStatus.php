@@ -27,10 +27,10 @@ enum QuestStatus: string
     public function color(): string
     {
         return match ($this) {
-            QuestStatus::PENDING => 'yellow',
-            QuestStatus::IN_PROGRESS => 'blue',
-            QuestStatus::COMPLETED => 'green',
-            QuestStatus::FAILED => 'red'
+            QuestStatus::PENDING => '#faf5ab',
+            QuestStatus::IN_PROGRESS => '#32abd9',
+            QuestStatus::COMPLETED => '#5fbb4e',
+            QuestStatus::FAILED => '#ec4141'
         };
     }
 }

@@ -24,7 +24,8 @@ class Quest extends Model
         'xp',
         'parent_id',
         'user_id',
-        'completed_at'
+        'completed_at',
+        'is_public'
     ];
 
     protected $guarded = ['is_rewarded'];
