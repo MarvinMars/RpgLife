@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\QuestCondition;
 use App\Enums\QuestStatus;
 use App\Observers\QuestObserver;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
@@ -20,6 +21,9 @@ class Quest extends Model
         'name',
         'slug',
         'status',
+        'condition',
+        'deadline',
+        'value',
         'description',
         'xp',
         'parent_id',
@@ -28,10 +32,16 @@ class Quest extends Model
         'is_public',
     ];
 
+    protected $dates = [
+        'completed_at',
+        'deadline'
+    ];
+
     protected $guarded = ['is_rewarded'];
 
     protected $casts = [
         'status' => QuestStatus::class,
+        'condition' => QuestCondition::class,
     ];
 
     public function user(): BelongsTo
@@ -59,17 +69,13 @@ class Quest extends Model
         return $this->hasMany(Reminder::class);
     }
 
-    public function canReward(): bool
+    public function progresses(): HasMany
     {
-        return $this->status === QuestStatus::COMPLETED && ! $this->is_rewarded;
+        return $this->hasMany(TimeProgress::class);
     }
 
-    public function reward(): bool
+    public function values(): HasMany
     {
-        $this->user->addXP($this->xp);
-        $this->is_rewarded = true;
-        $this->completed_at = now();
-
-        return $this->save();
+        return $this->hasMany(Value::class, 'quest_id');
     }
 }

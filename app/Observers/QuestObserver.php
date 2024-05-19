@@ -2,6 +2,7 @@
 
 namespace App\Observers;
 
+use App\Facades\QuestService;
 use App\Models\Quest;
 
 class QuestObserver
@@ -11,8 +12,8 @@ class QuestObserver
      */
     public function updated(Quest $quest): void
     {
-        if ($quest->canReward()) {
-            $quest->reward();
+        if (QuestService::canReward($quest)) {
+            QuestService::rewardUser($quest);
         }
     }
 }

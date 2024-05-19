@@ -2,7 +2,9 @@
 
 namespace App\Filament\Resources\QuestResource\Pages;
 
+use App\Enums\QuestCondition;
 use App\Filament\Resources\QuestResource;
+use Carbon\Carbon;
 use Filament\Resources\Pages\CreateRecord;
 
 class CreateQuest extends CreateRecord
@@ -12,6 +14,10 @@ class CreateQuest extends CreateRecord
     protected function mutateFormDataBeforeCreate(array $data): array
     {
         $data['user_id'] = auth()->id();
+
+        if($data['condition'] === QuestCondition::Time->value){
+            $data['value'] = Carbon::parse($data['value'])->diffInSeconds(Carbon::parse('00:00:00'));
+        }
 
         return $data;
     }
