@@ -6,6 +6,8 @@ use App\Enums\QuestCondition;
 use App\Enums\QuestStatus;
 use App\Facades\QuestService;
 use App\Models\Quest;
+use Filament\Support\Colors\Color;
+use Filament\Support\Enums\ActionSize;
 use Filament\Tables\Actions\Action;
 use Illuminate\Database\Eloquent\Model;
 

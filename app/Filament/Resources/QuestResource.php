@@ -4,12 +4,14 @@ namespace App\Filament\Resources;
 
 use App\Enums\QuestCondition;
 use App\Enums\QuestStatus;
+use App\Filament\Actions\Table\AddValueAction;
 use App\Filament\Actions\Table\CompleteAction;
 use App\Filament\Actions\Table\PauseAction;
 use App\Filament\Actions\Table\StartAction;
 use App\Filament\Resources\QuestResource\Pages;
 use App\Models\Characteristic;
 use App\Models\Quest;
+use App\Tables\Columns\ProgressBar;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\Repeater;
@@ -22,12 +24,16 @@ use Filament\Forms\Form;
 use Filament\Forms\Get;
 use Filament\Forms\Set;
 use Filament\Resources\Resource;
+use Filament\Support\Colors\Color;
 use Filament\Tables;
 use Filament\Tables\Actions\Action;
+use Filament\Tables\Actions\ActionGroup;
+use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Grouping\Group;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
@@ -63,18 +69,21 @@ class QuestResource extends Resource
                     ->options(Characteristic::all()->pluck('name', 'id'))->columnSpan(2),
                 Fieldset::make('Complete condition')
                         ->schema([
-                            Select::make('condition')->label('Type')
+                            Select::make('condition')
+                                  ->label('Type')
                                   ->options(QuestCondition::options())
                                   ->default(QuestCondition::Simple->value)
                                   ->enum(QuestCondition::class)
                                   ->live()
                                   ->columnSpan(1),
-                            TimePicker::make('value')->label('Time for complete')
+                            TimePicker::make('value')
+                                      ->label('Time for complete')
                                       ->visible(function (Get $get) {
                                           return $get('condition') === QuestCondition::Time->value;
                                       })
                                       ->columnSpan(1),
-                            TextInput::make('value')->label('Count for complete')
+                            TextInput::make('value')
+                                     ->label('Count for complete')
                                      ->default(0)
                                      ->type('number')
                                      ->visible(function (Get $get) {
@@ -98,21 +107,31 @@ class QuestResource extends Resource
             ->columns([
                 TextColumn::make('name'),
                 TextColumn::make('xp'),
-                TextColumn::make('value'),
-                TextColumn::make('progress')->sum('progresses', 'total_elapsed_time'),
-                IconColumn::make('is_public')->boolean(),
+                ProgressBar::make('value')
+                           ->label('Progress')
+                           ->disabled(fn (Quest $quest) => $quest->condition === QuestCondition::Simple)
+                           ->maxValue(fn (Quest $quest) => $quest->value )
+                           ->value(fn (Quest $quest) => match ($quest->condition) {
+                               QuestCondition::Time => $quest->progresses->sum('total_elapsed_time'),
+                               QuestCondition::Quantity => $quest->values->sum('value')
+                            }),
+                IconColumn::make('is_public')->boolean()->alignCenter(),
                 TextColumn::make('status')->badge(),
             ])
             ->filters([
                 //
             ])
             ->actions([
+                AddValueAction::make(),
                 CompleteAction::make(),
                 StartAction::make(),
                 PauseAction::make(),
-                ViewAction::make(),
-                EditAction::make(),
-            ])
+                ActionGroup::make([
+                    ViewAction::make(),
+                    EditAction::make(),
+                    DeleteAction::make(),
+                ])
+            ])->actionsPosition()
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
@@ -123,7 +142,6 @@ class QuestResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
         ];
     }
 
