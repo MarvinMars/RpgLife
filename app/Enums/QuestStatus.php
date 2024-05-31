@@ -2,7 +2,10 @@
 
 namespace App\Enums;
 
-enum QuestStatus: string
+use Filament\Support\Contracts\HasColor;
+use Filament\Support\Contracts\HasLabel;
+
+enum QuestStatus: string implements HasLabel, HasColor
 {
     case PENDING = 'pending';
     case IN_PROGRESS = 'in_progress';
@@ -14,7 +17,7 @@ enum QuestStatus: string
         return array_column(QuestStatus::cases(), 'value');
     }
 
-    public function label(): string
+    public function getLabel(): string
     {
         return match ($this) {
             QuestStatus::PENDING => 'Pending',
@@ -24,13 +27,13 @@ enum QuestStatus: string
         };
     }
 
-    public function color(): string
+    public function getColor(): string
     {
         return match ($this) {
-            QuestStatus::PENDING => '#faf5ab',
-            QuestStatus::IN_PROGRESS => '#32abd9',
-            QuestStatus::COMPLETED => '#5fbb4e',
-            QuestStatus::FAILED => '#ec4141'
+            QuestStatus::PENDING => 'gray',
+            QuestStatus::IN_PROGRESS => 'info',
+            QuestStatus::COMPLETED => 'success',
+            QuestStatus::FAILED => 'danger'
         };
     }
 }

@@ -21,6 +21,7 @@ class Quest extends Model
         'name',
         'slug',
         'status',
+        'image',
         'condition',
         'deadline',
         'value',

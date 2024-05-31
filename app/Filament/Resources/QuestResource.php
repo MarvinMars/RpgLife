@@ -14,6 +14,7 @@ use App\Models\Quest;
 use App\Tables\Columns\ProgressBar;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Fieldset;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -32,6 +33,7 @@ use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Columns\IconColumn;
+use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Grouping\Group;
 use Filament\Tables\Table;
@@ -57,7 +59,7 @@ class QuestResource extends Resource
                 TextInput::make('slug')->unique(ignoreRecord: true)->columnSpan(2),
                 TextInput::make('xp')->default(0)->type('number')->columnSpan(1),
                 Toggle::make('is_public')->inline(false)->columnSpan(1),
-                Textarea::make('description')->rows(10)->required()->columnSpan('full'),
+                Textarea::make('description')->rows(10)->columnSpan('full'),
                 Select::make('parent_id')
                     ->relationship(name: 'parent', titleAttribute: 'name', ignoreRecord: true)
                     ->options(Quest::all()->pluck('name', 'id'))
@@ -91,6 +93,7 @@ class QuestResource extends Resource
                                      })
                                      ->columnSpan(1),
                         ])->columns(2),
+                FileUpload::make('image')->columnSpan('full'),
                 Repeater::make('reminders')
                     ->relationship()
                     ->simple(
@@ -106,6 +109,7 @@ class QuestResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('name'),
+                ImageColumn::make('image'),
                 TextColumn::make('xp'),
                 ProgressBar::make('value')
                            ->label('Progress')
