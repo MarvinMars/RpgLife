@@ -3,6 +3,7 @@
 namespace App\Filament\Admin\Resources\QuestResource\Pages;
 
 use App\Filament\Admin\Resources\QuestResource;
+use Filament\Infolists\Components\ImageEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Pages\ViewRecord;
@@ -15,6 +16,7 @@ class ViewQuest extends ViewRecord
     {
         return $infolist
             ->schema([
+                ImageEntry::make('image'),
                 TextEntry::make('name'),
                 TextEntry::make('slug'),
                 TextEntry::make('status'),

@@ -74,11 +74,11 @@ class User extends Authenticatable
         $this->xp += $xp;
 
         if ($this->xp >= self::MAX_XP) {
-            $level = $this->calculateLevelFromXp($xp);
+            $level = $this->calculateLevelFromXp($this->xp);
 
             $this->level += $level;
 
-            $this->xp = $this->calculateXpAfterLevelUp($xp, $level);
+            $this->xp = $this->calculateXpAfterLevelUp($this->xp, $level);
 
         }
 

@@ -22,16 +22,16 @@ class CharacteristicQuestsChart extends ChartWidget
 
         foreach ($statuses as $status) {
             $dataset = [
-                'label' => $status->label().' quests',
+                'label' => $status->getLabel().' quests',
                 'data' => [],
-                'borderColor' => $status->color(),
+                'borderColor' => $status->getColor(),
                 'fill' => false,
                 'borderWidth' => 5,
             ];
 
             foreach ($characteristics as $characteristic) {
-                $completed = $characteristic->quests()->where('status', $status)->count();
-                $total = $characteristic->quests()->count();
+                $completed = $characteristic->quests->where('status', $status)->count();
+                $total = $characteristic->quests->count();
                 $dataset['data'][] = $completed / $total * 100;
             }
 
