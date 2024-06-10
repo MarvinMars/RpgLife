@@ -50,7 +50,7 @@ class ProgressBar extends Column
             $percent = 100;
         }
 
-         return $percent;
+        return $percent;
     }
     public function render(): View
     {

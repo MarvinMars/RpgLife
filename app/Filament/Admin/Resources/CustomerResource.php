@@ -2,7 +2,11 @@
 
 namespace App\Filament\Admin\Resources;
 
+use App\Filament\Admin\Resources\CustomerResource\Pages\CreateCustomer;
+use App\Filament\Admin\Resources\CustomerResource\Pages\EditCustomer;
+use App\Filament\Admin\Resources\CustomerResource\Pages\ListCustomers;
 use App\Models\User;
+use App\Tables\Columns\ProgressBar;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -20,9 +24,11 @@ class CustomerResource extends Resource
         return $form
             ->schema([
                 TextInput::make('name')->required(),
-                TextInput::make('email')->required()->email()->unique(),
+                TextInput::make('email')->required()->email()->unique(ignoreRecord:true),
                 TextInput::make('password')->password()->required()->autocomplete(false),
                 TextInput::make('password_confirmation')->nullable()->autocomplete(false),
+                TextInput::make('level')->numeric(),
+                TextInput::make('xp')->numeric()
             ]);
     }
 
@@ -30,7 +36,14 @@ class CustomerResource extends Resource
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('name'),
+                Tables\Columns\TextColumn::make('email'),
+                Tables\Columns\TextColumn::make('level'),
+                ProgressBar::make('xp')
+                           ->maxValue(fn (User $user) => User::MAX_XP)
+                           ->value(fn (User $user) => $user->xp),
+                Tables\Columns\TextColumn::make('created_at')->dateTime(),
+                Tables\Columns\TextColumn::make('updated_at')->dateTime(),
             ])
             ->filters([
                 //
@@ -55,9 +68,9 @@ class CustomerResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => \App\Filament\Admin\Resources\CustomerResource\Pages\ListCustomers::route('/'),
-            'create' => \App\Filament\Admin\Resources\CustomerResource\Pages\CreateCustomer::route('/create'),
-            'edit' => \App\Filament\Admin\Resources\CustomerResource\Pages\EditCustomer::route('/{record}/edit'),
+            'index' => ListCustomers::route('/'),
+            'create' => CreateCustomer::route('/create'),
+            'edit' => EditCustomer::route('/{record}/edit'),
         ];
     }
 }
