@@ -19,7 +19,7 @@ class QuestResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'parentId' => $this->parent_id ?? 0,
-            'imageUrl' => $this->image ? Storage::url($this->image) : ''
+            'imageUrl' => $this->image ? Storage::url($this->image) : '',
         ];
     }
 }

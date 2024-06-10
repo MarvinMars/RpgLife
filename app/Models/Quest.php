@@ -35,7 +35,7 @@ class Quest extends Model
 
     protected $dates = [
         'completed_at',
-        'deadline'
+        'deadline',
     ];
 
     protected $guarded = ['is_rewarded'];

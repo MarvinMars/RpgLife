@@ -14,11 +14,12 @@ class StartAction extends Action
     {
         return 'start';
     }
+
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->icon("heroicon-o-play");
+        $this->icon('heroicon-o-play');
         $this->hiddenLabel();
         $this->outlined();
         $this->button();

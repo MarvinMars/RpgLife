@@ -24,11 +24,11 @@ class CustomerResource extends Resource
         return $form
             ->schema([
                 TextInput::make('name')->required(),
-                TextInput::make('email')->required()->email()->unique(ignoreRecord:true),
+                TextInput::make('email')->required()->email()->unique(ignoreRecord: true),
                 TextInput::make('password')->password()->required()->autocomplete(false),
                 TextInput::make('password_confirmation')->nullable()->autocomplete(false),
                 TextInput::make('level')->numeric(),
-                TextInput::make('xp')->numeric()
+                TextInput::make('xp')->numeric(),
             ]);
     }
 
@@ -40,8 +40,8 @@ class CustomerResource extends Resource
                 Tables\Columns\TextColumn::make('email'),
                 Tables\Columns\TextColumn::make('level'),
                 ProgressBar::make('xp')
-                           ->maxValue(fn (User $user) => User::MAX_XP)
-                           ->value(fn (User $user) => $user->xp),
+                    ->maxValue(fn (User $user) => User::MAX_XP)
+                    ->value(fn (User $user) => $user->xp),
                 Tables\Columns\TextColumn::make('created_at')->dateTime(),
                 Tables\Columns\TextColumn::make('updated_at')->dateTime(),
             ])

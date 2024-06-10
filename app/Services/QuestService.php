@@ -6,19 +6,18 @@ use App\Enums\QuestCondition;
 use App\Enums\QuestStatus;
 use App\Models\Quest;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Carbon;
 
 class QuestService
 {
     public function isNeedTimeTrack(Quest $quest): bool
     {
         return $quest->condition === QuestCondition::Time
-               && ( $quest->status === QuestStatus::PENDING || $quest->status === QuestStatus::IN_PROGRESS);
+               && ($quest->status === QuestStatus::PENDING || $quest->status === QuestStatus::IN_PROGRESS);
     }
 
     public function startTimeProgress(Quest $quest): bool
     {
-        return !!$quest->progresses()->create([
+        return (bool) $quest->progresses()->create([
             'started_at' => now(),
         ]);
     }
@@ -42,7 +41,7 @@ class QuestService
 
     public function checkQuestTimeCondition(Quest $quest): bool
     {
-        $total =  $quest->progresses()->sum('total_elapsed_time');
+        $total = $quest->progresses()->sum('total_elapsed_time');
 
         return $total >= $quest->value;
     }
@@ -51,7 +50,7 @@ class QuestService
     {
         $statusCheck = $quest->status === QuestStatus::PENDING || $quest->status === QuestStatus::IN_PROGRESS;
 
-        $conditionCheck = match ($quest->condition){
+        $conditionCheck = match ($quest->condition) {
             QuestCondition::Quantity => $this->checkQuestQuantityCondition($quest),
             QuestCondition::Time => $this->checkQuestTimeCondition($quest),
             QuestCondition::Simple => true,
@@ -87,6 +86,7 @@ class QuestService
     {
         $isUpdated = $quest->update(['status' => QuestStatus::PENDING]);
         $isTrackEnd = $this->endTimeProgress($quest);
+
         return $isUpdated && $isTrackEnd;
     }
 
@@ -94,7 +94,7 @@ class QuestService
     {
         return $quest->update([
             'status' => QuestStatus::COMPLETED,
-            'completed_at' => now()
+            'completed_at' => now(),
         ]);
     }
 }

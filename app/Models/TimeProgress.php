@@ -16,17 +16,17 @@ class TimeProgress extends Model
         'started_at',
         'ended_at',
         'total_elapsed_time',
-        'quest_id'
+        'quest_id',
     ];
 
     protected $dates = [
         'started_at',
-        'paused_at'
+        'paused_at',
     ];
 
     protected $casts = [
         'started_at' => 'datetime',
-        'paused_at' => 'datetime'
+        'paused_at' => 'datetime',
     ];
 
     public function quest(): BelongsTo

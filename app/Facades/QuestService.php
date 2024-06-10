@@ -2,7 +2,6 @@
 
 namespace App\Facades;
 
-use App\Models\TimeProgress;
 use Illuminate\Support\Facades\Facade;
 
 /**

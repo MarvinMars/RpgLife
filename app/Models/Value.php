@@ -13,7 +13,7 @@ class Value extends Model
     protected $table = 'quest_values';
 
     protected $fillable = [
-        'value'
+        'value',
     ];
 
     public function quest(): BelongsTo

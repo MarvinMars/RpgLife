@@ -11,8 +11,9 @@ class ProgressBar extends Column
 {
     protected string $view = 'tables.columns.progress-bar';
 
-    protected int | Closure $value = 0;
-    protected int | Closure $maxValue = 100;
+    protected int|Closure $value = 0;
+
+    protected int|Closure $maxValue = 100;
 
     public function value(mixed $value): static
     {
@@ -40,18 +41,19 @@ class ProgressBar extends Column
 
     public function calculatePercent(): float|int
     {
-        if(!$this->getMaxValue()){
+        if (! $this->getMaxValue()) {
             return 0;
         }
 
         $percent = $this->getValue() / $this->getMaxValue() * 100;
 
-        if($percent > 100) {
+        if ($percent > 100) {
             $percent = 100;
         }
 
         return $percent;
     }
+
     public function render(): View
     {
         $this->viewData['percent'] = $this->calculatePercent();

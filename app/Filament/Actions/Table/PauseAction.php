@@ -14,11 +14,12 @@ class PauseAction extends Action
     {
         return 'pause';
     }
+
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->icon("heroicon-o-pause");
+        $this->icon('heroicon-o-pause');
         $this->hiddenLabel();
         $this->outlined();
         $this->button();
