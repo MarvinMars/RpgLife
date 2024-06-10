@@ -1,8 +1,10 @@
 <?php
 
-namespace App\Filament\Resources;
+namespace App\Filament\Admin\Resources;
 
-use App\Filament\Resources\CharacteristicResource\Pages;
+use App\Filament\Admin\Resources\CharacteristicResource\Pages\CreateCharacteristic;
+use App\Filament\Admin\Resources\CharacteristicResource\Pages\EditCharacteristic;
+use App\Filament\Admin\Resources\CharacteristicResource\Pages\ListCharacteristics;
 use App\Models\Characteristic;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -79,9 +81,9 @@ class CharacteristicResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListCharacteristics::route('/'),
-            'create' => Pages\CreateCharacteristic::route('/create'),
-            'edit' => Pages\EditCharacteristic::route('/{record}/edit'),
+            'index' => ListCharacteristics::route('/'),
+            'create' => CreateCharacteristic::route('/create'),
+            'edit' => EditCharacteristic::route('/{record}/edit'),
         ];
     }
 }

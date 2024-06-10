@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Filament\Resources\QuestResource\Pages;
+namespace App\Filament\Admin\Resources\QuestResource\Pages;
 
-use App\Filament\Resources\QuestResource;
+use App\Filament\Admin\Resources\QuestResource;
 use Filament\Infolists\Components\ImageEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Infolist;

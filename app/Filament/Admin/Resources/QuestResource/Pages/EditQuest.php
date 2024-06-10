@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Filament\Resources\QuestResource\Pages;
+namespace App\Filament\Admin\Resources\QuestResource\Pages;
 
+use App\Filament\Admin\Resources\QuestResource;
 use App\Enums\QuestCondition;
-use App\Filament\Resources\QuestResource;
 use Carbon\Carbon;
 use Carbon\CarbonInterval;
 use Filament\Actions;

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources;
+namespace App\Filament\Admin\Resources;
 
 use App\Enums\QuestCondition;
 use App\Enums\QuestStatus;
@@ -152,10 +152,10 @@ class QuestResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListQuests::route('/'),
-            'create' => Pages\CreateQuest::route('/create'),
-            'view' => Pages\ViewQuest::route('/{record}'),
-            'edit' => Pages\EditQuest::route('/{record}/edit'),
+            'index' => \App\Filament\Admin\Resources\QuestResource\Pages\ListQuests::route('/'),
+            'create' => \App\Filament\Admin\Resources\QuestResource\Pages\CreateQuest::route('/create'),
+            'view' => \App\Filament\Admin\Resources\QuestResource\Pages\ViewQuest::route('/{record}'),
+            'edit' => \App\Filament\Admin\Resources\QuestResource\Pages\EditQuest::route('/{record}/edit'),
         ];
     }
 }
