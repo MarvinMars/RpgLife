@@ -3,17 +3,14 @@
 namespace App\Filament\App\Resources;
 
 use App\Enums\QuestCondition;
-use App\Enums\QuestStatus;
 use App\Filament\Actions\Table\AddValueAction;
 use App\Filament\Actions\Table\CompleteAction;
 use App\Filament\Actions\Table\PauseAction;
 use App\Filament\Actions\Table\StartAction;
 use App\Filament\App\Resources\QuestResource\Pages;
-use App\Filament\App\Resources\QuestResource\RelationManagers;
 use App\Models\Characteristic;
 use App\Models\Quest;
 use App\Tables\Columns\ProgressBar;
-use Filament\Forms;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\FileUpload;
@@ -23,7 +20,6 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\TimePicker;
-use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
 use Filament\Forms\Set;
@@ -33,14 +29,10 @@ use Filament\Tables\Actions\ActionGroup;
 use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Actions\ViewAction;
-use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Grouping\Group;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
-use Filament\Resources\Components\Tab;
 
 class QuestResource extends Resource
 {
@@ -53,70 +45,69 @@ class QuestResource extends Resource
         return $form
             ->schema([
                 Section::make('Base')
-                       ->schema([
-                           TextInput::make('name')
-                                    ->required()
-                                    ->live(debounce: 1000)
-                                    ->afterStateUpdated(fn (Set $set, ?string $state) => $set('slug', Str::slug($state)))
-                                    ->columnSpan(2),
-                           TextInput::make('xp')->default(0)->type('number')->columnSpan(1),
-                           Select::make('characteristics')
-                                 ->multiple()
-                                 ->relationship(titleAttribute: 'name')
-                                 ->options(Characteristic::all()->pluck('name', 'id'))->columnSpanFull(),
-                       ])
-                       ->columns(3),
+                    ->schema([
+                        TextInput::make('name')
+                            ->required()
+                            ->live(debounce: 1000)
+                            ->afterStateUpdated(fn (Set $set, ?string $state) => $set('slug', Str::slug($state)))
+                            ->columnSpan(2),
+                        TextInput::make('xp')->default(0)->type('number')->columnSpan(1),
+                        Select::make('characteristics')
+                            ->multiple()
+                            ->relationship(titleAttribute: 'name')
+                            ->options(Characteristic::all()->pluck('name', 'id'))->columnSpanFull(),
+                    ])
+                    ->columns(3),
                 Section::make('Content')
-                       ->schema([
-                           FileUpload::make('image'),
-                           Textarea::make('description')->rows(10),
-                           Fieldset::make('Complete condition')
-                                   ->schema([
-                                       Select::make('condition')
-                                             ->label('Type')
-                                             ->options(QuestCondition::options())
-                                             ->default(QuestCondition::Simple->value)
-                                             ->enum(QuestCondition::class)
-                                             ->live()
-                                             ->columnSpan(1),
-                                       TimePicker::make('value')
-                                                 ->label('Time for complete')
-                                                 ->visible(function (Get $get) {
-                                                     return $get('condition') === QuestCondition::Time->value;
-                                                 })
-                                                 ->columnSpan(1),
-                                       TextInput::make('value')
-                                                ->label('Count for complete')
-                                                ->default(0)
-                                                ->type('number')
-                                                ->visible(function (Get $get) {
-                                                    return $get('condition') === QuestCondition::Quantity->value;
-                                                })
-                                                ->columnSpan(1),
-                                   ]),
-                       ])
-                       ->collapsed(),
+                    ->schema([
+                        FileUpload::make('image'),
+                        Textarea::make('description')->rows(10),
+                        Fieldset::make('Complete condition')
+                            ->schema([
+                                Select::make('condition')
+                                    ->label('Type')
+                                    ->options(QuestCondition::options())
+                                    ->default(QuestCondition::Simple->value)
+                                    ->enum(QuestCondition::class)
+                                    ->live()
+                                    ->columnSpan(1),
+                                TimePicker::make('value')
+                                    ->label('Time for complete')
+                                    ->visible(function (Get $get) {
+                                        return $get('condition') === QuestCondition::Time->value;
+                                    })
+                                    ->columnSpan(1),
+                                TextInput::make('value')
+                                    ->label('Count for complete')
+                                    ->default(0)
+                                    ->type('number')
+                                    ->visible(function (Get $get) {
+                                        return $get('condition') === QuestCondition::Quantity->value;
+                                    })
+                                    ->columnSpan(1),
+                            ]),
+                    ])
+                    ->collapsed(),
                 Section::make('Etc')
-                       ->schema([
-                           TextInput::make('slug')->unique(ignoreRecord: true)->columnSpan(2),
-                           Select::make('parent_id')
-                                 ->relationship(name: 'parent', titleAttribute: 'name', ignoreRecord: true)
-                                 ->searchable()
-                                 ->getOptionLabelUsing(fn ($value): ?string => Quest::find($value)?->name)
-                                 ->label('Parent')
-                                 ->columnSpan(1),
+                    ->schema([
+                        TextInput::make('slug')->unique(ignoreRecord: true)->columnSpan(2),
+                        Select::make('parent_id')
+                            ->relationship(name: 'parent', titleAttribute: 'name', ignoreRecord: true)
+                            ->searchable()
+                            ->getOptionLabelUsing(fn ($value): ?string => Quest::find($value)?->name)
+                            ->label('Parent')
+                            ->columnSpan(1),
 
-
-                           Repeater::make('reminders')
-                                   ->relationship()
-                                   ->simple(
-                                       DateTimePicker::make('datetime')->native(false)->seconds(false)->required()
-                                   )
-                                   ->defaultItems(0)
-                                   ->columnSpan('full'),
-                       ])
-                       ->columns(3)
-                       ->collapsed(),
+                        Repeater::make('reminders')
+                            ->relationship()
+                            ->simple(
+                                DateTimePicker::make('datetime')->native(false)->seconds(false)->required()
+                            )
+                            ->defaultItems(0)
+                            ->columnSpan('full'),
+                    ])
+                    ->columns(3)
+                    ->collapsed(),
             ]);
     }
 
@@ -125,21 +116,21 @@ class QuestResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('name')->searchable()
-                          ->description(fn (Quest $record): string => $record->description ?? ''),
+                    ->description(fn (Quest $record): string => $record->description ?? ''),
                 ImageColumn::make('image')->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('xp'),
                 TextColumn::make('characteristics.name')
-                          ->badge()
-                          ->separator(','),
+                    ->badge()
+                    ->separator(','),
                 ProgressBar::make('value')
-                           ->toggleable()
-                           ->label('Progress')
-                           ->disabled(fn (Quest $quest) => $quest->condition === QuestCondition::Simple)
-                           ->maxValue(fn (Quest $quest) => $quest->value)
-                           ->value(fn (Quest $quest) => match ($quest->condition) {
-                               QuestCondition::Time => $quest->progresses->sum('total_elapsed_time'),
-                               QuestCondition::Quantity => $quest->values->sum('value')
-                           }),
+                    ->toggleable()
+                    ->label('Progress')
+                    ->disabled(fn (Quest $quest) => $quest->condition === QuestCondition::Simple)
+                    ->maxValue(fn (Quest $quest) => $quest->value)
+                    ->value(fn (Quest $quest) => match ($quest->condition) {
+                        QuestCondition::Time => $quest->progresses->sum('total_elapsed_time'),
+                        QuestCondition::Quantity => $quest->values->sum('value')
+                    }),
                 TextColumn::make('status')->badge(),
             ])
             ->filters([

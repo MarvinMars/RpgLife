@@ -20,11 +20,11 @@ class ManageQuests extends ManageRecords
         return [
             'all' => Tab::make('All'),
             'pending' => Tab::make('Pending')
-                            ->modifyQueryUsing(fn (Builder $query) => $query->where('status', QuestStatus::PENDING)),
+                ->modifyQueryUsing(fn (Builder $query) => $query->where('status', QuestStatus::PENDING)),
             'in_progress' => Tab::make('In progress')
-                                ->modifyQueryUsing(fn (Builder $query) => $query->where('status', QuestStatus::PENDING)),
+                ->modifyQueryUsing(fn (Builder $query) => $query->where('status', QuestStatus::PENDING)),
             'completed' => Tab::make('Completed')
-                              ->modifyQueryUsing(fn (Builder $query) => $query->where('status', QuestStatus::COMPLETED)),
+                ->modifyQueryUsing(fn (Builder $query) => $query->where('status', QuestStatus::COMPLETED)),
         ];
     }
 
@@ -32,23 +32,23 @@ class ManageQuests extends ManageRecords
     {
         return [
             Actions\CreateAction::make()
-                                ->slideOver()
-                                ->beforeFormFilled(function ($data) {
-                                    if (($data['condition'] ?? false ) && $data['condition'] === QuestCondition::Time->value) {
-                                        $data['value'] = Carbon::parse($data['value'])->diffInSeconds(Carbon::parse('00:00:00'));
-                                    }
+                ->slideOver()
+                ->beforeFormFilled(function ($data) {
+                    if (($data['condition'] ?? false) && $data['condition'] === QuestCondition::Time->value) {
+                        $data['value'] = Carbon::parse($data['value'])->diffInSeconds(Carbon::parse('00:00:00'));
+                    }
 
-                                    return $data;
-                                })
-                                ->mutateFormDataUsing(function (array $data): array {
-                                    $data['user_id'] = auth()->id();
+                    return $data;
+                })
+                ->mutateFormDataUsing(function (array $data): array {
+                    $data['user_id'] = auth()->id();
 
-                                    if (($data['condition'] ?? false ) && $data['condition'] === QuestCondition::Time->value) {
-                                        $data['value'] = Carbon::parse($data['value'])->diffInSeconds(Carbon::parse('00:00:00'));
-                                    }
+                    if (($data['condition'] ?? false) && $data['condition'] === QuestCondition::Time->value) {
+                        $data['value'] = Carbon::parse($data['value'])->diffInSeconds(Carbon::parse('00:00:00'));
+                    }
 
-                                    return $data;
-                                }),
+                    return $data;
+                }),
         ];
     }
 }

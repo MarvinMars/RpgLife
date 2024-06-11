@@ -10,7 +10,6 @@ use App\Filament\Actions\Table\StartAction;
 use App\Models\Characteristic;
 use App\Models\Quest;
 use App\Tables\Columns\ProgressBar;
-use Filament\Tables\Actions\CreateAction;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\FileUpload;
@@ -109,12 +108,12 @@ class QuestResource extends Resource
             )
             ->columns([
                 TextColumn::make('name')->searchable()
-                                        ->description(fn (Quest $record): string => $record->description ?? ''),
+                    ->description(fn (Quest $record): string => $record->description ?? ''),
                 ImageColumn::make('image'),
                 TextColumn::make('xp'),
                 TextColumn::make('characteristics.name')
-                          ->badge()
-                          ->separator(','),
+                    ->badge()
+                    ->separator(','),
                 ProgressBar::make('value')
                     ->label('Progress')
                     ->disabled(fn (Quest $quest) => $quest->condition === QuestCondition::Simple)

@@ -23,11 +23,11 @@ class Dashboard extends BaseDashboard
         return $form
             ->schema([
                 Section::make()
-                       ->schema([
-                           DatePicker::make('startDate'),
-                           DatePicker::make('endDate'),
-                       ])
-                       ->columns(2),
+                    ->schema([
+                        DatePicker::make('startDate'),
+                        DatePicker::make('endDate'),
+                    ])
+                    ->columns(2),
             ]);
     }
 }

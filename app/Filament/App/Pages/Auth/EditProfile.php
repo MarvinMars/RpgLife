@@ -3,7 +3,6 @@
 namespace App\Filament\App\Pages\Auth;
 
 use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Pages\Auth\EditProfile as BaseEditProfile;
 

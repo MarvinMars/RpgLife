@@ -12,9 +12,10 @@ use Illuminate\Database\Eloquent\Builder;
 class StatsOverview extends BaseWidget
 {
     use InteractsWithPageFilters;
+
     protected static ?int $sort = 2;
 
-    protected int | string | array $columnSpan = 1;
+    protected int|string|array $columnSpan = 1;
 
     protected function getColumns(): int
     {
@@ -34,9 +35,10 @@ class StatsOverview extends BaseWidget
                 ->when($endDate, fn (Builder $query) => $query->whereDate('created_at', '<=', $endDate))
                 ->count();
             $data[] = Stat::make($questStatus->getLabel(), $count)
-                          ->color($questStatus->getColor())
-                          ->icon($questStatus->getIcon());
+                ->color($questStatus->getColor())
+                ->icon($questStatus->getIcon());
         }
+
         return $data;
     }
 }

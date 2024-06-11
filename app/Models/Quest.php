@@ -6,12 +6,13 @@ use App\Enums\QuestCondition;
 use App\Enums\QuestStatus;
 use App\Observers\QuestObserver;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Builder;
+
 #[ObservedBy([QuestObserver::class])]
 class Quest extends Model
 {
