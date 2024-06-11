@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-
+use Illuminate\Database\Eloquent\Builder;
 #[ObservedBy([QuestObserver::class])]
 class Quest extends Model
 {
@@ -44,6 +44,15 @@ class Quest extends Model
         'status' => QuestStatus::class,
         'condition' => QuestCondition::class,
     ];
+
+    protected static function booted(): void
+    {
+        static::addGlobalScope('customer', function (Builder $query) {
+            if (auth()->check()) {
+                $query->where('user_id', auth()->id());
+            }
+        });
+    }
 
     public function user(): BelongsTo
     {

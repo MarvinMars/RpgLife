@@ -32,7 +32,7 @@ class CharacteristicQuestsChart extends ChartWidget
             foreach ($characteristics as $characteristic) {
                 $completed = $characteristic->quests->where('status', $status)->count();
                 $total = $characteristic->quests->count();
-                $dataset['data'][] = $completed / $total * 100;
+                $dataset['data'][] = $total > 0 ? $completed / $total * 100 : 0;
             }
 
             $datasets[] = $dataset;

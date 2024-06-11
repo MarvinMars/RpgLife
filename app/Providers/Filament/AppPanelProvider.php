@@ -4,6 +4,9 @@ namespace App\Providers\Filament;
 
 use App\Filament\Admin\Resources\CharacteristicResource;
 use App\Filament\Admin\Resources\QuestResource;
+use App\Filament\Admin\Widgets\CharacteristicQuestsChart;
+use App\Filament\Admin\Widgets\CharacteristicsOverview;
+use App\Filament\App\Pages\Auth\EditProfile;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
@@ -30,16 +33,20 @@ class AppPanelProvider extends PanelProvider
             ->colors([
                 'primary' => Color::Amber,
             ])
+            ->viteTheme('resources/css/filament/admin/theme.css')
             ->discoverResources(in: app_path('Filament/App/Resources'), for: 'App\\Filament\\App\\Resources')
             ->discoverPages(in: app_path('Filament/App/Pages'), for: 'App\\Filament\\App\\Pages')
-            ->resources([
-                QuestResource::class,
-                CharacteristicResource::class,
-            ])
-            ->pages([
-                Pages\Dashboard::class,
-            ])
+            ->pages([])
+            ->databaseNotifications()
             ->login()
+            ->registration()
+            ->passwordReset()
+            ->emailVerification()
+            ->profile(EditProfile::class)
+            ->widgets([
+//                CharacteristicsOverview::class,
+//                CharacteristicQuestsChart::class
+            ])
             ->discoverWidgets(in: app_path('Filament/App/Widgets'), for: 'App\\Filament\\App\\Widgets')
             ->middleware([
                 EncryptCookies::class,

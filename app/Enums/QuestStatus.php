@@ -36,4 +36,25 @@ enum QuestStatus: string implements HasColor, HasLabel
             QuestStatus::FAILED => 'danger'
         };
     }
+
+    public function getClassColor(): string
+    {
+        return match ($this) {
+            QuestStatus::PENDING => 'gray',
+            QuestStatus::IN_PROGRESS => 'info',
+            QuestStatus::COMPLETED => 'success',
+            QuestStatus::FAILED => 'danger'
+        };
+    }
+
+    public function getIcon(): string
+    {
+        return match ($this) {
+            QuestStatus::PENDING => 'heroicon-o-pause',
+            QuestStatus::IN_PROGRESS => 'heroicon-o-play',
+            QuestStatus::COMPLETED => 'heroicon-o-check',
+            QuestStatus::FAILED => 'heroicon-o-x-mark',
+            'default' => ''
+        };
+    }
 }

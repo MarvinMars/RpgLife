@@ -10,6 +10,7 @@ use App\Filament\Actions\Table\StartAction;
 use App\Models\Characteristic;
 use App\Models\Quest;
 use App\Tables\Columns\ProgressBar;
+use Filament\Tables\Actions\CreateAction;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\FileUpload;
@@ -31,6 +32,7 @@ use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Grouping\Group;
 use Filament\Tables\Table;
 use Illuminate\Support\Str;
 
@@ -47,6 +49,7 @@ class QuestResource extends Resource
         return $form
             ->schema([
                 TextInput::make('name')
+                    ->required()
                     ->live(debounce: 1000)
                     ->afterStateUpdated(fn (Set $set, ?string $state) => $set('slug', Str::slug($state)))
                     ->columnSpan(2),
@@ -101,10 +104,17 @@ class QuestResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->defaultGroup(
+                Group::make('status')->collapsible()
+            )
             ->columns([
-                TextColumn::make('name'),
+                TextColumn::make('name')->searchable()
+                                        ->description(fn (Quest $record): string => $record->description ?? ''),
                 ImageColumn::make('image'),
                 TextColumn::make('xp'),
+                TextColumn::make('characteristics.name')
+                          ->badge()
+                          ->separator(','),
                 ProgressBar::make('value')
                     ->label('Progress')
                     ->disabled(fn (Quest $quest) => $quest->condition === QuestCondition::Simple)
