@@ -31,7 +31,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
         'image',
     ];
 
-    protected $guarded = ['level', 'xp'];
+    protected $guarded = ['level', 'xp', 'is_admin'];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -40,7 +40,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
      */
     protected $hidden = [
         'password',
-        'remember_token',
+        'remember_token'
     ];
 
     /**
@@ -106,6 +106,10 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
 
     public function canAccessPanel(Panel $panel): bool
     {
+        if ($panel->getId() === 'admin') {
+            return $this->is_admin && $this->hasVerifiedEmail();
+        }
+
         return $this->hasVerifiedEmail();
     }
 

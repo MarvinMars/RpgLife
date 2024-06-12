@@ -40,10 +40,6 @@ class AppPanelProvider extends PanelProvider
             ->passwordReset()
             ->emailVerification()
             ->profile(EditProfile::class)
-            ->widgets([
-                //                CharacteristicsOverview::class,
-                //                CharacteristicQuestsChart::class
-            ])
             ->discoverWidgets(in: app_path('Filament/App/Widgets'), for: 'App\\Filament\\App\\Widgets')
             ->middleware([
                 EncryptCookies::class,
