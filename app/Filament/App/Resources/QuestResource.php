@@ -116,9 +116,10 @@ class QuestResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('name')->searchable()
-                    ->description(fn (Quest $record): string => $record->description ?? ''),
+                                        ->sortable()
+                                        ->description(fn (Quest $record): string => $record->description ?? ''),
                 ImageColumn::make('image')->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('xp'),
+                TextColumn::make('xp')->sortable(),
                 TextColumn::make('characteristics.name')
                     ->badge()
                     ->separator(','),
@@ -131,7 +132,7 @@ class QuestResource extends Resource
                         QuestCondition::Time => $quest->progresses->sum('total_elapsed_time'),
                         QuestCondition::Quantity => $quest->values->sum('value')
                     }),
-                TextColumn::make('status')->badge(),
+                TextColumn::make('status')->sortable()->badge(),
             ])
             ->filters([
                 //

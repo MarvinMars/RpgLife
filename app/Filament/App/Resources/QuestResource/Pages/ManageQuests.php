@@ -22,7 +22,7 @@ class ManageQuests extends ManageRecords
             'pending' => Tab::make('Pending')
                 ->modifyQueryUsing(fn (Builder $query) => $query->where('status', QuestStatus::PENDING)),
             'in_progress' => Tab::make('In progress')
-                ->modifyQueryUsing(fn (Builder $query) => $query->where('status', QuestStatus::PENDING)),
+                ->modifyQueryUsing(fn (Builder $query) => $query->where('status', QuestStatus::IN_PROGRESS)),
             'completed' => Tab::make('Completed')
                 ->modifyQueryUsing(fn (Builder $query) => $query->where('status', QuestStatus::COMPLETED)),
         ];
