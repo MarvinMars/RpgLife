@@ -8,6 +8,7 @@ use App\Filament\App\Resources\QuestResource;
 use App\Models\Characteristic;
 use App\Models\Quest;
 use App\Tables\Columns\ProgressBar;
+use Filament\Forms\Form;
 use Filament\Tables;
 use Filament\Tables\Actions\ReplicateAction;
 use Filament\Tables\Actions\ViewAction;
@@ -50,17 +51,13 @@ class QuestsOverview extends BaseWidget
                           ->formatStateUsing(fn ($state): string => $state->name)
                           ->color(fn (Characteristic $characteristic) => $characteristic->color),
             ])->actions([
-                ViewAction::make(),
-                ReplicateAction::make()->beforeReplicaSaved(function (Model $replica): void {
+                ViewAction::make()->slideOver(),
+                ReplicateAction::make()->form(fn (Form $form) => QuestResource::form($form))->slideOver()
+                ->beforeReplicaSaved(function (Model $replica): void {
                     $replica->user_id = auth()->id();
                     $replica->slug = Str::uuid() . '-' .  $replica->slug;
                     $replica->status = QuestStatus::PENDING;
                     $replica->is_public = false;
-                })->after(function (Model $replica, Quest $reference): void {
-                    $characteristics = $reference->characteristics;
-                    foreach ($characteristics as $characteristic) {
-                        $replica->characteristics()->attach($characteristic->id);
-                    }
                 })
             ]);
     }
