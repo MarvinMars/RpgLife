@@ -12,8 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('characteristic_quest', function (Blueprint $table) {
-            $table->foreignId('characteristic_id')->constrained()->cascadeOnDelete()->change();
-            $table->foreignId('quest_id')->constrained()->cascadeOnDelete()->change();
+            $table->dropForeign(['characteristic_id']);
+            $table->dropForeign(['quest_id']);
+
+            $table->unsignedBigInteger('characteristic_id')->nullable()->change();
+            $table->unsignedBigInteger('quest_id')->nullable()->change();
+
+            $table->foreign('characteristic_id')->references('id')->on('characteristics')->cascadeOnDelete();
+            $table->foreign('quest_id')->references('id')->on('quests')->cascadeOnDelete();
         });
     }
 
@@ -23,8 +29,14 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('characteristic_quest', function (Blueprint $table) {
-            $table->foreignId('characteristic_id')->constrained()->change();
-            $table->foreignId('quest_id')->constrained()->change();
+            $table->dropForeign(['characteristic_id']);
+            $table->dropForeign(['quest_id']);
+
+            $table->unsignedBigInteger('characteristic_id')->nullable(false)->change();
+            $table->unsignedBigInteger('quest_id')->nullable(false)->change();
+
+            $table->foreign('characteristic_id')->references('id')->on('characteristics');
+            $table->foreign('quest_id')->references('id')->on('quests');
         });
     }
 };
